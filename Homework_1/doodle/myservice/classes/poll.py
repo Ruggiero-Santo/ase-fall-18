@@ -4,7 +4,7 @@ class Poll():
         self.id = id
         self.title = title
         self.options = {op: [] for op in options}
-        # print(self.options)
+        print(self.options)
 
     def vote(self, person, vote):
         if vote in self.options:
@@ -15,9 +15,9 @@ class Poll():
                 raise UserAlreadyVotedException(msg)
         else:
             msg = vote + " is not a valid option for the poll."
-            raise NonExistingOptionException(msg)
+            raise NonExistingOptionException(msg)  
 
-        result = self.get_winners()
+        result = self.get_winners()  
 
         return result
 
@@ -31,8 +31,8 @@ class Poll():
                 winners = [o]
             elif len(self.options[o]) == max_votes:
                 winners.append(o)
-
-        return winners
+        
+        return winners 
 
     def get_voted_options(self, person):
         return [o for o, voters in self.options.items() if person in voters]
@@ -47,8 +47,8 @@ class Poll():
 
     def serialize(self):
         winners = self.get_winners()
-        return {'id':self.id,
-                'title': self.title,
+        return {'id':self.id, 
+                'title': self.title, 
                 'options': self.options,
                 'winners' : winners}
 

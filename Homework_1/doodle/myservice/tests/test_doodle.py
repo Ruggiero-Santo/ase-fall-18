@@ -10,39 +10,38 @@ class TestApp(unittest.TestCase):
         app = tested_app.test_client()
 
         #create 3 doodles
-        reply = app.post('/doodles',
-                         data=json.dumps({"title" : "poll1",
+        reply = app.post('/doodles', 
+                         data=json.dumps({"title" : "poll1", 
                                           "options" : ["1", "2", "3"]
-                                          }),
+                                          }), 
                          content_type='application/json')
 
-        print(str(reply.data, 'utf8'))
         body = json.loads(str(reply.data, 'utf8'))
 
         self.assertEqual(body['pollnumber'], 1)
 
-        reply = app.post('/doodles',
-                         data=json.dumps({"title" : "poll2",
+        reply = app.post('/doodles', 
+                         data=json.dumps({"title" : "poll2", 
                                           "options" : ["1", "2"]
-                                          }),
-                         content_type='application/json')
-
+                                          }), 
+                         content_type='application/json')      
+        
         body = json.loads(str(reply.data, 'utf8'))
 
         self.assertEqual(body['pollnumber'], 2)
 
-        reply = app.post('/doodles',
-                         data=json.dumps({"title" : "poll3",
+        reply = app.post('/doodles', 
+                         data=json.dumps({"title" : "poll3", 
                                           "options" : ["pizza", "disco"]
-                                          }),
-                         content_type='application/json')
-
+                                          }), 
+                         content_type='application/json')        
+                        
         body = json.loads(str(reply.data, 'utf8'))
 
         self.assertEqual(body['pollnumber'], 3)
 
         #get the three doodles
-        reply = app.get('/doodles')
+        reply = app.get('/doodles')                       
         body = json.loads(str(reply.data, 'utf8'))
         self.assertEqual(body, {
                                 "activepolls": [
@@ -120,7 +119,7 @@ class TestApp(unittest.TestCase):
         reply = app.put('/doodles/2',data=json.dumps( {
                                                         "person" : "fred",
                                                         "option" : "1"
-                                                    }),
+                                                    }), 
                          content_type='application/json')
 
         body = json.loads(str(reply.data, 'utf8'))
@@ -130,13 +129,13 @@ class TestApp(unittest.TestCase):
                                     "1"
                                 ]
                             }
-                        )
+                        )   
 
         # vote ok
         reply = app.put('/doodles/2',data=json.dumps( {
                                                         "person" : "fred",
                                                         "option" : "2"
-                                                    }),
+                                                    }), 
                          content_type='application/json')
 
         body = json.loads(str(reply.data, 'utf8'))
@@ -147,12 +146,12 @@ class TestApp(unittest.TestCase):
                                     "2"
                                 ]
                             }
-                        )
+                        )   
         # vote ok
         reply = app.put('/doodles/2',data=json.dumps( {
                                                         "person" : "barney",
                                                         "option" : "1"
-                                                    }),
+                                                    }), 
                          content_type='application/json')
 
         body = json.loads(str(reply.data, 'utf8'))
@@ -162,12 +161,12 @@ class TestApp(unittest.TestCase):
                                     "1"
                                 ]
                             }
-                        )
+                        )  
         # vote replica
         reply = app.put('/doodles/2',data=json.dumps( {
                                                         "person" : "barney",
                                                         "option" : "1"
-                                                    }),
+                                                    }), 
                          content_type='application/json')
 
         body = json.loads(str(reply.data, 'utf8'))
@@ -178,13 +177,13 @@ class TestApp(unittest.TestCase):
                                 "description": "The browser (or proxy) sent a request that this server could not understand.",
                                 "message": "400 Bad Request: The browser (or proxy) sent a request that this server could not understand."
                             }
-                        )
+                        )   
 
-        # vote non-existing option
+        # vote non-existing option                
         reply = app.put('/doodles/2',data=json.dumps( {
                                                         "person" : "wilma",
                                                         "option" : "8"
-                                                    }),
+                                                    }), 
                          content_type='application/json')
 
         body = json.loads(str(reply.data, 'utf8'))
@@ -194,7 +193,7 @@ class TestApp(unittest.TestCase):
                                 "description": "The browser (or proxy) sent a request that this server could not understand.",
                                 "message": "400 Bad Request: The browser (or proxy) sent a request that this server could not understand."
                             }
-                        )
+                        )   
         # delete doodle
         reply = app.delete('/doodles/2')
         body = json.loads(str(reply.data, 'utf8'))
@@ -203,9 +202,9 @@ class TestApp(unittest.TestCase):
                                     "1"
                                 ]
                             }
-                        )
+                        )      
 
-        reply = app.get('/doodles')
+        reply = app.get('/doodles')                        
         body = json.loads(str(reply.data, 'utf8'))
         self.assertEqual(body, {
                                 "activepolls": [
@@ -236,7 +235,7 @@ class TestApp(unittest.TestCase):
                                         ]
                                     }
                                 ]
-                            } )
+                            } )  
 
         # delete previously doodle
         reply = app.delete('/doodles/2')
@@ -247,8 +246,8 @@ class TestApp(unittest.TestCase):
                                 "description": "The requested URL is no longer available on this server and there is no forwarding address. If you followed a link from a foreign page, please contact the author of this page.",
                                 "message": "410 Gone: The requested URL is no longer available on this server and there is no forwarding address. If you followed a link from a foreign page, please contact the author of this page."
                             }
-                        )
-
+                        ) 
+        
         #delete non-existing doodle
         reply = app.delete('/doodles/12')
         body = json.loads(str(reply.data, 'utf8'))
@@ -268,7 +267,7 @@ class TestApp(unittest.TestCase):
                                 "description": "The requested URL is no longer available on this server and there is no forwarding address. If you followed a link from a foreign page, please contact the author of this page.",
                                 "message": "410 Gone: The requested URL is no longer available on this server and there is no forwarding address. If you followed a link from a foreign page, please contact the author of this page."
                             }
-                        )
+                        )          
 
     def test3(self): #person poll
         app = tested_app.test_client()
@@ -276,7 +275,7 @@ class TestApp(unittest.TestCase):
         reply = app.put('/doodles/1',data=json.dumps( {
                                                         "person" : "fred",
                                                         "option" : "1"
-                                                    }),
+                                                    }), 
                          content_type='application/json')
         body = json.loads(str(reply.data, 'utf8'))
         self.assertEqual(body,{
@@ -284,13 +283,13 @@ class TestApp(unittest.TestCase):
                                     "1"
                                 ]
                             }
-                        )
+                        )   
 
         # vote ok
         reply = app.put('/doodles/1',data=json.dumps( {
                                                         "person" : "fred",
                                                         "option" : "2"
-                                                    }),
+                                                    }), 
                          content_type='application/json')
         body = json.loads(str(reply.data, 'utf8'))
         self.assertEqual(body,{
@@ -299,12 +298,12 @@ class TestApp(unittest.TestCase):
                                     "2"
                                 ]
                             }
-                        )
+                        )   
         # vote ok
         reply = app.put('/doodles/1',data=json.dumps( {
                                                         "person" : "barney",
                                                         "option" : "1"
-                                                    }),
+                                                    }), 
                          content_type='application/json')
         body = json.loads(str(reply.data, 'utf8'))
         self.assertEqual(body,{
@@ -312,13 +311,13 @@ class TestApp(unittest.TestCase):
                                     "1"
                                 ]
                             }
-                        )
+                        )  
 
         #get votes from a person who voted
         reply = app.get('/doodles/1/fred')
         body = json.loads(str(reply.data, 'utf8'))
         self.assertEqual(body,{
-                                'votedoptions':
+                                'votedoptions': 
                                 ['1', '2']}
                         )
 
@@ -326,7 +325,7 @@ class TestApp(unittest.TestCase):
         reply = app.get('/doodles/1/wilma')
         body = json.loads(str(reply.data, 'utf8'))
         self.assertEqual(body,{
-                                'votedoptions':
+                                'votedoptions': 
                                                 []}
                         )
 
@@ -364,3 +363,6 @@ class TestApp(unittest.TestCase):
                                 "description": "The requested URL is no longer available on this server and there is no forwarding address. If you followed a link from a foreign page, please contact the author of this page.",
                                 "message": "410 Gone: The requested URL is no longer available on this server and there is no forwarding address. If you followed a link from a foreign page, please contact the author of this page."
                             })
+
+        
+
